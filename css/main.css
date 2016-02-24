@@ -1,0 +1,36 @@
+.mainWrapper{
+  width: 300px;
+  border: 1px solid black;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.temp{
+  width: 50%;
+  text-align: center;
+  height: 200px;
+  float: left;
+  line-height: 180px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.wrapper{
+  width: 50%;
+  float: right;
+  text-align: center;
+  line-height: 90px;
+  font-size: 20px;
+}
+
+#icon > img{
+  width: 90px;
+}
+
+#geo{
+  width: 300px;
+  height: 100px;
+  text-align: center;
+  margin: 0 auto;
+  line-height: 80px;
+}
