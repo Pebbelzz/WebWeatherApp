@@ -8,51 +8,29 @@ var weatherIcon = "";
 var Kelvintemp = 0;
 var latitude = 0;
 var longitude = 0;
-
-/*if (navigator.geolocation){
-  navigator.geolocation.getCurrentPosition(showPosition, showError);
-  function showPosition(position) {
-    latitude = position.coords.latitude;
-    longitude = position.coords.longitude;
-    console.log(latitude + ", " + longitude);
-  }
-  function showError(error) {
-	switch(error.code) {
-		case error.PERMISSION_DENIED:
-			alert("User denied the request for Geolocation.");
-			break;
-		case error.POSITION_UNAVAILABLE:
-			alert("Location information is unavailable.");
-			break;
-		case error.TIMEOUT:
-			alert("The request to get user location timed out.");
-			break;
-		case error.UNKNOWN_ERROR:
-			alert("An unknown error occurred.");
-			break;
-	}
-}
-
-}
-*/
+var city = "";
 
 //gets geolocation from browser
 function geoload(){
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-    document.getElementById('geo').innerHTML = "latitude: " + position.coords.latitude + "<br>longitude: " + position.coords.longitude;
     console.log(position.coords.latitude);
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
+    console.log(latitude + " " + longitude);
+    xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=" + apiKey);
+    xhr.send();
     return latitude, longitude;
     });
   }
+  else{
+    alert("Geolocation is not supported by this browser")
+  }
 }
 
-
+//xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?zip=22980,us&APPID=" + apiKey);
+//runs reqListener() once API is loaded
 xhr.addEventListener("load", reqListener);
-xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?zip=22980,us&APPID=" + apiKey);
-xhr.send();
 
 //grab JSON data
 function reqListener(){
@@ -66,7 +44,9 @@ function reqListener(){
   temp = Math.floor((Kelvintemp - 273.15) * 1.8 + 32);
   //sets icon based on weather icon code form JSON
   weatherIcon = jsonWeather.weather[0].icon;
+  city = jsonWeather.name;
   updateApp();
+  setBackground(weatherIcon);
 }
 
 //updates HTML with weather data
@@ -74,9 +54,52 @@ function updateApp(){
   document.getElementById('temp').innerHTML = temp + "&deg; F";
   document.getElementById('discription').innerHTML = jsonCurrent;
   document.getElementById('icon').innerHTML = "<img src=images/" + weatherIcon + ".png />";
+  document.getElementById('geo').innerHTML = city;
   console.log(latitude, longitude)
 }
 
 function capitalizeFirstLetter(jsonCurrent) {
     return jsonCurrent.charAt(0).toUpperCase() + jsonCurrent.slice(1);
+}
+
+//set background based on weather
+
+//variables for weather to match images
+var cloudy = "../images/cloudy.jpg";
+var partlyCloudy = "../images/partlyCloudy.jpg";
+var rain = "../images/rain.jpg";
+var sunny = "../images/sunny.jpg";
+var thunder = "../images/thunder.jpg";
+var snow = "../images/snow.jpg";
+var backgroundImage = "";
+var defaultImage = "../images/default.jpg";
+
+
+//still need to add night versions for all options
+function setBackground(weatherIcon){
+    switch (weatherIcon){
+      case "01d":
+        backgroundImage = sunny
+        break;
+      case "02d":
+        backgroundImage = partlyCloudy
+        break;
+      case "03d", "04d":
+        backgroundImage = cloudy
+        break;
+      case "09d", "09n", "10d", "10n":
+        backgroundImage = rain
+        break;
+      case "11d", "11n":
+        backgroundImage = thunder
+        break;
+      case "13d", "13n":
+        backgroundImage = snow
+        break;
+      default:
+        backgroundImage = defaultImage;
+    }
+  console.log(backgroundImage);
+  document.body.style.backgroundImage = "url('" + backgroundImage + "')";
+
 }
