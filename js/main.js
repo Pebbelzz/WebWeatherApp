@@ -25,6 +25,7 @@ function geoload(){
   }
   else{
     alert("Geolocation is not supported by this browser")
+    //get zipcode input from user and then do alternative GET for API with zip
   }
 }
 
@@ -71,20 +72,28 @@ var rain = "../images/rain.jpg";
 var sunny = "../images/sunny.jpg";
 var thunder = "../images/thunder.jpg";
 var snow = "../images/snow.jpg";
+var clearNight = "../images/clearNight.jpg"
+var partlyCloudNight = "../images/partlyCloudNight.jpg"
 var backgroundImage = "";
 var defaultImage = "../images/default.jpg";
 
 
-//still need to add night versions for all options
+
 function setBackground(weatherIcon){
     switch (weatherIcon){
       case "01d":
         backgroundImage = sunny
         break;
+      case "01n":
+        backgroundImage = clearNight
+        break;
       case "02d":
         backgroundImage = partlyCloudy
         break;
-      case "03d", "04d":
+      case "02n":
+        backgroundImage = partlyCloudNight
+        break;
+      case "03d", "03n", "04d", "04n":
         backgroundImage = cloudy
         break;
       case "09d", "09n", "10d", "10n":
