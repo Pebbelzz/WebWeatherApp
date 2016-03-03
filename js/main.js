@@ -9,34 +9,30 @@ var Kelvintemp = 0;
 var latitude = 0;
 var longitude = 0;
 var city = "";
+var zipcode= 0;
 
 //gets geolocation from browser
 function geoload(){
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-    console.log(position.coords.latitude);
+    navigator.geolocation.getCurrentPosition(function(position, errormsg) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
-    console.log(latitude + " " + longitude);
     xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=" + apiKey);
     xhr.send();
     return latitude, longitude;
     });
   }
   else{
-    alert("Geolocation is not supported by this browser")
-    //get zipcode input from user and then do alternative GET for API with zip
+    document.write('Your browser does not support GeoLocation');
+    }
   }
-}
 
-//xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?zip=22980,us&APPID=" + apiKey);
 //runs reqListener() once API is loaded
 xhr.addEventListener("load", reqListener);
 
 //grab JSON data
 function reqListener(){
   jsonWeather = JSON.parse(this.responseText);
-  console.log(jsonWeather);
   jsonCurrent = jsonWeather.weather[0].description;
   //capitalize first letter of the weather discription
   jsonCurrent = jsonCurrent.charAt(0).toUpperCase() + jsonCurrent.slice(1);
@@ -56,15 +52,14 @@ function updateApp(){
   document.getElementById('discription').innerHTML = jsonCurrent;
   document.getElementById('icon').innerHTML = "<img src=images/" + weatherIcon + ".png />";
   document.getElementById('geo').innerHTML = city;
-  console.log(latitude, longitude)
 }
 
+//capitalize First letter of location
 function capitalizeFirstLetter(jsonCurrent) {
     return jsonCurrent.charAt(0).toUpperCase() + jsonCurrent.slice(1);
 }
 
 //set background based on weather
-
 //variables for weather to match images
 var cloudy = "../images/cloudy.jpg";
 var partlyCloudy = "../images/partlyCloudy.jpg";
@@ -76,8 +71,6 @@ var clearNight = "../images/clearNight.jpg"
 var partlyCloudNight = "../images/partlyCloudNight.jpg"
 var backgroundImage = "";
 var defaultImage = "../images/default.jpg";
-
-
 
 function setBackground(weatherIcon){
     switch (weatherIcon){
@@ -93,22 +86,29 @@ function setBackground(weatherIcon){
       case "02n":
         backgroundImage = partlyCloudNight
         break;
-      case "03d", "03n", "04d", "04n":
+      case "03d":
+      case "03n":
+      case "04d":
+      case "04n":
         backgroundImage = cloudy
         break;
-      case "09d", "09n", "10d", "10n":
+      case "09d":
+      case "09n":
+      case "10d":
+      case "10n":
         backgroundImage = rain
         break;
-      case "11d", "11n":
+      case "11d":
+      case "11n":
         backgroundImage = thunder
         break;
-      case "13d", "13n":
+      case "13d":
+      case "13n":
         backgroundImage = snow
         break;
       default:
         backgroundImage = defaultImage;
     }
-  console.log(backgroundImage);
   document.body.style.backgroundImage = "url('" + backgroundImage + "')";
 
 }

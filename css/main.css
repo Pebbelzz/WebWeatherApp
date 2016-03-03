@@ -13,6 +13,8 @@ body{
   height: 200px;
   margin: 0 auto;
   background-color: #FFFFFF;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius:  8px;
 }
 
 .temp{
@@ -42,8 +44,10 @@ body{
   height: 50px;
   text-align: center;
   margin: 0 auto;
-  line-height: 45px;
+  line-height: 55px;
   background-color: white;
   font-size: 25px;
   font-weight: bold;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
