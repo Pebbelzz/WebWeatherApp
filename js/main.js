@@ -36,9 +36,10 @@ function reqListener(){
   jsonCurrent = jsonWeather.weather[0].description;
   //capitalize first letter of the weather discription
   jsonCurrent = jsonCurrent.charAt(0).toUpperCase() + jsonCurrent.slice(1);
-  //get temp and then convert from Kelvin to Farhenheight
+  //get temp and then convert from Kelvin to Farhenheight and Celcius
   Kelvintemp = jsonWeather.main.temp;
-  temp = Math.floor((Kelvintemp - 273.15) * 1.8 + 32);
+  tempF = Math.floor((Kelvintemp - 273.15) * 1.8 + 32);
+  tempC = Math.floor(Kelvintemp - 273.15);
   //sets icon based on weather icon code form JSON
   weatherIcon = jsonWeather.weather[0].icon;
   city = jsonWeather.name;
@@ -48,10 +49,11 @@ function reqListener(){
 
 //updates HTML with weather data
 function updateApp(){
-  document.getElementById('temp').innerHTML = temp + "&deg; F";
+  document.getElementById('temp').innerHTML = tempF + "&deg; F";
   document.getElementById('discription').innerHTML = jsonCurrent;
   document.getElementById('icon').innerHTML = "<img src=images/" + weatherIcon + ".png />";
   document.getElementById('geo').innerHTML = city;
+  document.getElementById('tempToggle').innerHTML = "Celcius";
 }
 
 //capitalize First letter of location
