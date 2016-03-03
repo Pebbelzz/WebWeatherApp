@@ -10,6 +10,8 @@ var latitude = 0;
 var longitude = 0;
 var city = "";
 var zipcode= 0;
+//global for temp choice toggle between fahrenheit(=0) and celsius(=1)
+var tempChoice = 0
 
 //gets geolocation from browser
 function geoload(){
@@ -36,7 +38,7 @@ function reqListener(){
   jsonCurrent = jsonWeather.weather[0].description;
   //capitalize first letter of the weather discription
   jsonCurrent = jsonCurrent.charAt(0).toUpperCase() + jsonCurrent.slice(1);
-  //get temp and then convert from Kelvin to Farhenheight and Celcius
+  //get temp and then convert from Kelvin to Fahrenheit and Celcius
   Kelvintemp = jsonWeather.main.temp;
   tempF = Math.floor((Kelvintemp - 273.15) * 1.8 + 32);
   tempC = Math.floor(Kelvintemp - 273.15);
@@ -54,6 +56,20 @@ function updateApp(){
   document.getElementById('icon').innerHTML = "<img src=images/" + weatherIcon + ".png />";
   document.getElementById('geo').innerHTML = city;
   document.getElementById('tempToggle').innerHTML = "Celcius";
+}
+
+function changeTemp(){
+  //temp is currently F on page
+  if (tempChoice == 0){
+    document.getElementById('temp').innerHTML = tempC + "&deg; C";
+    document.getElementById('tempToggle').innerHTML = "Fahrenheit";
+    tempChoice = 1;
+  }
+  else{
+    document.getElementById('tempToggle').innerHTML = "Celcius";
+    document.getElementById('temp').innerHTML = tempF + "&deg; F";
+    tempChoice = 0;
+  }
 }
 
 //capitalize First letter of location
